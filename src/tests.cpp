@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "tests.h"
 
 // 练习1，实现库函数strlen
@@ -24,6 +25,8 @@ void my_strcat(char *str_1, char *str_2)
    */
 
    // IMPLEMENT YOUR CODE HERE
+  for (char *ptr1 = str_1 + my_strlen(str_1), *ptr2 = str_2; *ptr2; ++ptr1, ++ptr2)
+    *ptr1 = *ptr2;
 }
 
 
@@ -37,7 +40,23 @@ char *my_strstr(char *s, char *p)
    */
 
    // IMPLEMENT YOUR CODE HERE
-  return 0;
+  // std::printf("s=%s, p=%s\n", s, p);
+  char *ptr = p, *loc = nullptr;
+  for (; *s; ++s) {
+    if (*s == *ptr) {
+      if (loc == nullptr)
+        loc = s;
+      // std::printf("ptr=%s\n", ptr);
+      ++ptr;
+      if (*ptr == '\0') {
+        // printf("loc: %s\n", loc);
+        return loc;
+      }
+    } else
+      loc = nullptr;
+  }
+
+  return nullptr;
 }
 
 
