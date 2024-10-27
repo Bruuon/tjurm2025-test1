@@ -243,7 +243,40 @@ void resize(float *in, float *out, int h, int w, int c, float scale)
 
   int new_h = h * scale, new_w = w * scale;
   // IMPLEMENT YOUR CODE HERE
+  typedef float IN_MAT[h][w][c];
+  typedef float OUT_MAT[new_h][new_w][c];
+  IN_MAT *inMat = (IN_MAT *)in;
+  OUT_MAT *outMat = (OUT_MAT *)out;
 
+  float x0, y0, dx, dy;
+  int x1, x2, x3, x4, y1, y2, y3, y4;
+  float *Q, *P1, *P2, *P3, *P4;
+
+  for (int y = 0; y < new_h; ++y) {
+    for (int x = 0; x < new_w; ++x) {
+      // center point
+      x0 = x / scale; y0 = y / scale;
+      // top-left
+      x1 = static_cast<int>(x0) % w; y1 = static_cast<int>(y0) % h;
+      // top-right
+      x2 = (x1 + 1) % w; y2 = y1;
+      // bottom-left
+      x3 = x1; y3 = (y1 + 1) % h;
+      // bottom-right
+      x4 = (x1 + 1) % w; y4 = (y1 + 1) % h;
+
+      dx = x0 - x1; dy = y0 - y1;
+
+      Q = (*outMat)[y][x];
+      P1 = (*inMat)[y1][x1]; P2 = (*inMat)[y2][x2];
+      P3 = (*inMat)[y3][x3]; P4 = (*inMat)[y4][x4];
+      // x0 %= w; y0 %= h;
+      for (int i = 0; i < c; ++i) {
+        // (*outMat)[y][x][i] = (*inMat)[y0][x0][i];
+        Q[i] = P1[i] * (1 - dx) * (1 - dy) + P2[i] * dx * (1 - dy) + P3[i] * (1 - dx) * dy + P4[i] * dx * dy;
+      }
+    }
+  }
 }
 
 
