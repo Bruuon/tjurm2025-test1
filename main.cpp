@@ -14,7 +14,7 @@ void test_rgb2gray()
   int h, w, c;
 
   imread(path, &img, &h, &w, &c);
-  std::cout << "读取图片images/rgb2gray/input.jpg，高度为" << h << "，高度为" << w
+  std::cout << "读取图片images/rgb2gray/input.jpg，高度为" << h << "，宽度为" << w
     << "，通道数为" << c
     << std::endl;
 
@@ -58,17 +58,23 @@ void test_strcat()
   std::cout << "开始测试函数 << my_strcat >> ..." << std::endl;
 
   int n = 2000;
+  char *text;
   // 来源：电影《绿皮书》
-  char str1[n] =
+  // change to avoid `variable-sized object may not be initialized` error
+  char str1[n];
+  text =
     "Dear Dolores\n"
     "When I think of you, I'm reminded of the beautiful plains of Iowa. The distance \n"
     "between us is breaking my spirit. My time and experiences without you are meaningless\n"
     "to me. ";
+  std::strncpy(str1, text, n);
 
-  char str2[n] =
+  char str2[n];
+  text =
     "Falling in love with you was the easiest thing I have ever done. Nothing \n"
     "matters to me but you. And everyday I am alive, I'm aware of this. I loved you the day \n"
     "I met you, I love you today... And I will love you to rest of my life.";
+  std::strncpy(str2, text, n);
 
   char str1_tmp[n], str2_tmp[n];
   strcpy(str1_tmp, str1), strcpy(str2_tmp, str2);
@@ -169,8 +175,8 @@ int main()
   test_strcat();
   std::cout << "开始测试函数 << my_strstr >> ..." << std::endl;
   test_strstr();
-  // std::cout << "开始测试函数 << rgb2gray >> ..." << std::endl;
-  // test_rgb2gray();
+  std::cout << "开始测试函数 << rgb2gray >> ..." << std::endl;
+  test_rgb2gray();
   // std::cout << "开始测试函数 << resize >> ..." << std::endl;
   // test_resize();
   // std::cout << "开始测试函数 << hist_eq >> ..." << std::endl;

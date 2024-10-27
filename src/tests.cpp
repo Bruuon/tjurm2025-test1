@@ -100,7 +100,7 @@ char *my_strstr(char *s, char *p)
 
 
  // 练习4，将彩色图片(rgb)转化为灰度图片
-void rgb2gray(float *in, float *out, int h, int w)
+void rgb2gray(float *in, float *out, const int h, const int w)
 {
   /**
    * 编写这个函数，将一张彩色图片转化为灰度图片。以下是各个参数的含义：
@@ -122,7 +122,25 @@ void rgb2gray(float *in, float *out, int h, int w)
    */
 
    // IMPLEMENT YOUR CODE HERE
-   // ...
+  const int channel = 3;
+  // const int step = w * channel;
+  // float *pixel = nullptr;
+  // for (int i = 0; i < h; ++i) {
+  //   for (int j = 0; j < w; ++j) {
+  //     pixel = &in[i * step + j * channel];
+  //     out[i * w + j] = pixel[0] * .1140 + pixel[1] * .5870 + pixel[2] * .2989;
+  //   }
+  // }
+
+  typedef float BGR_MAT[h][w][channel];
+  typedef float GREY_MAT[h][w];
+  BGR_MAT *bgrMat = (BGR_MAT *)in;
+  GREY_MAT *greyMat = (GREY_MAT *)out;
+  for (int i = 0; i < h; ++i) {
+    for (int j = 0; j < w; ++j) {
+      (*greyMat)[i][j] = (*bgrMat)[i][j][0] * .1140 + (*bgrMat)[i][j][1] * .5870 + (*bgrMat)[i][j][2] * .2989;
+    }
+  }
 }
 
 // 练习5，实现图像处理算法 resize：缩小或放大图像
