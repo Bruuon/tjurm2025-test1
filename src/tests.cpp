@@ -300,4 +300,25 @@ void hist_eq(float *in, int h, int w)
    */
 
    // IMPLEMENT YOUR CODE HERE
+  const int L = 256;
+  const long N = w * h;
+  int level[L] = { 0 }, newLevel[L];
+  double freq[L] = { 0.0 };
+
+  for (int r = 0; r < h; ++r) {
+    for (int c = 0; c < w; ++c) {
+      ++level[(int)in[r * w + c]];
+    }
+  }
+
+  double sum = 0;
+  for (int i = 0; i < L; ++i) {
+    freq[i] = level[i] / (double)N;
+    sum += freq[i];
+    newLevel[i] = sum * (L - 1);
+  }
+
+  for(int i=0; i<N; ++i){
+    in[i]=newLevel[(int)in[i]];
+  }
 }
